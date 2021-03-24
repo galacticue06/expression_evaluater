@@ -1,7 +1,7 @@
-# expression_parser
+# expression_evaluater
 Version(0.0.1)
 -
-Initial release of expression_parser.
+Initial release of expression_evaluater.
 
 
 What's Available
