@@ -1,4 +1,4 @@
-from expression_parser import parse
+from expression_evaluater import parse
 
 class evaluate_math:
     def __init__(self, expression, functions={}, constants={}):
