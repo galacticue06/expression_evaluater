@@ -19,7 +19,7 @@ setup(
     long_description = long_description,
     long_description_context_type = 'text/markdown',
 
-    author='Kerbal Galactic', 
+    author='Gandalf Sax Guy(AKA Kerbal Galactic)', 
     author_email='kerbalgalactic@gmail.com',
     url='',
     download_url='',
