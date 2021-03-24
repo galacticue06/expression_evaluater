@@ -11,7 +11,7 @@ except Exception:
     long_description = ''
 
 setup(
-    name="math_parser",
+    name="expression_parser",
     packages=find_packages('.'),
     version='1.0.0',
     license='MIT',
