@@ -1,3 +1,5 @@
+import sys
+
 def clean(string):
     ops = all_oper(string)
     for i in ops:
@@ -394,7 +396,11 @@ def eq_evaluate(seq,func_nms={},const_nms={}):
 def evaluate(seq, func_names = [], funcs = [], const_names = [], vals = []):
     replacement = load_const(seq, const_names, vals)
     replacement = solve_func(replacement,func_names,funcs)
-    ret = str(solve(replacement))
+    try:
+        ret = str(solve(replacement))
+    except ZeroDivisionError:
+        sys.stderr.write('ZeroDivisionError: division by zero\n')
+        return None
     for i in range(ret.count("_")):
         ret = ret.replace("_","-")
     return float(ret)
