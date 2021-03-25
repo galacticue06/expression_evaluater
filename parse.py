@@ -1,4 +1,27 @@
-import sys
+def analyze(string):
+    if string.count("(") != string.count(")"):
+        return "Mismatched Brackets"
+    br = 0
+    ls = len(string)
+    for j in range(ls):
+        i = string[j]
+        if j > 0:
+            pre = string[j-1]
+        if j < ls-1:
+            pos = string[j+1]
+        if br < 0:
+            return "Mismatched Brackets"
+        if i is "(":
+            br += 1
+            if j > 0:
+                if pre.isnumeric():
+                    return "Incorrect Syntax"
+        elif i is ")":
+            br -= 1
+            if j < ls-1:
+                if pos.isnumeric():
+                    return "Incorrect Syntax"
+            
 
 def clean(string):
     ops = all_oper(string)
@@ -394,15 +417,15 @@ def eq_evaluate(seq,func_nms={},const_nms={}):
     return None
 
 def evaluate(seq, func_names = [], funcs = [], const_names = [], vals = []):
+    prompt = analyze(seq)
+    if prompt != None:
+        return prompt
     replacement = load_const(seq, const_names, vals)
     replacement = solve_func(replacement,func_names,funcs)
     try:
         ret = str(solve(replacement))
     except ZeroDivisionError:
-        sys.stderr.write('ZeroDivisionError: division by zero\n')
-        return None
+        return 'Division By Zero'
     for i in range(ret.count("_")):
         ret = ret.replace("_","-")
     return float(ret)
-
-
