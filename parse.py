@@ -164,14 +164,19 @@ def val(string):
 
 def norm(string):
     ls = len(string)
+    if string[0] == "-":
+        string = "_"+string[1:ls]
+        return norm(string)
     if string.isnumeric():
         return string
     if "(" in string:
         string = solve(string)
-    if "*-" in string or "/-" in string or "*+" in string or "/+" in string:
+    if "*-" in string:
         prim = 1
-    elif "^+" in string or "^-" in string:
+    elif "/-" in string:
         prim = 2
+    elif "^+" in string or "^-" in string:
+        prim = 3
     else:
         prim = 0
     mts = ['+', '-', '*', '/', '%', '^']
@@ -179,9 +184,12 @@ def norm(string):
         mts = ['*', '/', '^', '+', '-', '%']
     tp = [0, 0, 0, 0, 0, 1]
     if prim == 1:
-        mts = mts[::-1]
-        mts.append(mts.pop(0))
+        mts = ['+', '*', '-', '/', '%', '^']
+##        mts = mts[::-1]
+##        mts.append(mts.pop(0))
     elif prim == 2:
+        mts = ['+', '/', '-', '*', '%', '^']
+    elif prim == 3:
         mts = mts[::-1]
     ret = []
     for delim in mts:
@@ -207,7 +215,7 @@ def norm(string):
                     break
             except:
                 pass
-                           
+    #print(ret,mts,string)                      
     try:
         if ret[0] == "":
             for i in range(3):
@@ -218,9 +226,6 @@ def norm(string):
         if comp(ret[2]):
             ret[2] = norm(ret[2])
     except:
-        if string[0] == "-":
-            string = "_"+string[1:ls]
-            return norm(string)
         return string
     
     if "_" in str(ret[0]):
@@ -344,6 +349,9 @@ def eq_evaluate(seq,func_nms={},const_nms={}):
 def evaluate(seq, func_names = [], funcs = [], const_names = [], vals = []):
     replacement = load_const(seq, const_names, vals)
     replacement = solve_func(replacement,func_names,funcs)
-    return float(solve(replacement))
+    ret = str(solve(replacement))
+    for i in range(ret.count("_")):
+        ret = ret.replace("_","-")
+    return float(ret)
 
 
