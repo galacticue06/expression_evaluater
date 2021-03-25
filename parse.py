@@ -1,3 +1,43 @@
+def clean(string):
+    ops = all_oper(string)
+    for i in ops:
+        co = i.count("-")
+        if co > 0:
+            if co%2==0:
+                string = string.replace(i,"+")
+            else:
+                string = string.replace(i,"-")
+    return string
+
+def all_oper(string):
+    mts = '+-*/%^'
+    ret = ''
+    all_ = []
+    c = 0
+    for i in string:
+        if i in mts:
+            c = 1
+            ret += i
+        else:
+            if c == 1:
+                all_.append(ret)
+                ret = ''
+            c = 0
+    return all_
+def prim_oper(string):
+    mts = '+-*/%^'
+    ret = ''
+    c = 0
+    for i in string:
+        if i in mts:
+            c = 1
+            ret += i
+        else:
+            if c == 1:
+                break
+            c = 0
+    return ret
+
 def depth(string,dp):
     l = [string]
     while True:
@@ -163,7 +203,10 @@ def val(string):
 
 
 def norm(string):
+    if "--" in string:
+        string = clean(string)
     ls = len(string)
+    prim = 0
     if string[0] == "-":
         string = "_"+string[1:ls]
         return norm(string)
@@ -172,13 +215,15 @@ def norm(string):
     if "(" in string:
         string = solve(string)
     if "*-" in string:
-        prim = 1
+        if prim_oper(string) =="*-":
+            prim = 1
     elif "/-" in string:
-        prim = 2
+        if prim_oper(string) =="/-":
+            prim = 2
     elif "^+" in string or "^-" in string:
-        prim = 3
-    else:
-        prim = 0
+        prb = prim_oper(string)
+        if prb =="^-" or prb=="^+":
+            prim = 3
     mts = ['+', '-', '*', '/', '%', '^']
     if prim > 0 and string[0] in mts:
         mts = ['*', '/', '^', '+', '-', '%']
@@ -215,7 +260,7 @@ def norm(string):
                     break
             except:
                 pass
-    #print(ret,mts,string)                      
+    #print(str(ret)+' '*(30-len(str(ret)))+str(string))                      
     try:
         if ret[0] == "":
             for i in range(3):
