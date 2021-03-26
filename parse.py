@@ -1,3 +1,34 @@
+alph = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+def find(string):
+    con = []
+    fun = []
+    seq = ""
+    tog = 0
+    for i in range(len(string)):
+        c = string[i]
+        if c in alph or c.lower() in alph:
+            tog = 1
+            seq += c
+        else:
+            if tog:
+                acs = 1
+                try:
+                    if c == "(":
+                        acs = 0
+                except:
+                    pass
+                if acs:
+                    con.append(seq)
+                else:
+                    fun.append(seq)
+                seq = ""
+                tog = 0
+    if seq!="":
+        con.append(seq)
+    return con,fun
+
+
 def analyze(string):
     if string.count("(") != string.count(")"):
         return "Mismatched Brackets"
@@ -418,10 +449,19 @@ def eq_evaluate(seq,func_nms={},const_nms={}):
 
 def evaluate(seq, func_names = [], funcs = [], const_names = [], vals = []):
     prompt = analyze(seq)
+    con,fun = find(seq)
+    for i in con:
+        if not i in const_names:
+            return "Variable Not Defined: "+i
+    for i in fun:
+        if not i in func_names:
+            return "Function Not Defined: "+i
     if prompt != None:
         return prompt
-    replacement = load_const(seq, const_names, vals)
-    replacement = solve_func(replacement,func_names,funcs)
+    replacement = solve_func(seq,func_names,funcs)
+    replacement = load_const(replacement, const_names, vals)
+    #replacement = load_const(seq, const_names, vals)
+    #replacement = solve_func(replacement,func_names,funcs)
     try:
         ret = str(solve(replacement))
     except ZeroDivisionError:
