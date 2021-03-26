@@ -55,6 +55,8 @@ def analyze(string):
             
 
 def clean(string):
+    for i in range(string.count("+-")):
+        string.replace("+-","-")
     ops = all_oper(string)
     for i in ops:
         co = i.count("-")
@@ -259,7 +261,7 @@ def val(string):
 
 
 def norm(string):
-    if "--" in string:
+    if "--" in string or "+-" in string:
         string = clean(string)
     ls = len(string)
     prim = 0
@@ -469,3 +471,7 @@ def evaluate(seq, func_names = [], funcs = [], const_names = [], vals = []):
     for i in range(ret.count("_")):
         ret = ret.replace("_","-")
     return float(ret)
+        
+        
+
+
