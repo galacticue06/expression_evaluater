@@ -1,7 +1,7 @@
-# expression_evaluater
+# expression_evaluator
 Version(1.0.0)
 -
-Complete release of expression_evaluater. 
+Complete release of expression_evaluator. 
 
 What's New
 -
