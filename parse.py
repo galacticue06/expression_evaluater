@@ -19,13 +19,16 @@ def find(string):
                 except:
                     pass
                 if acs:
-                    con.append(seq)
+                    if not seq in con:
+                        con.append(seq)
                 else:
-                    fun.append(seq)
+                    if not seq in fun:
+                        fun.append(seq)
                 seq = ""
                 tog = 0
     if seq!="":
-        con.append(seq)
+        if not seq in con:
+            con.append(seq)
     return con,fun
 
 
@@ -130,17 +133,12 @@ def solve_func(string,fname,func):
         if seq[len(finder)] != "(":
             scrape = -1
         if scrape > -1:
-            if "," in seq:
-                f = get_op(string,scrape+len(finder))
-                splt = f[1:len(f)-1].split(",")
-                arg = []
-                for j in splt:
-                    arg.append(float(solve(j)))
-                #res = call(arg)
-                res = call(*arg)
-            else:
-                norm = solve(get_op(string,scrape+len(finder)))
-                res = call(float(norm))
+            f = get_op(string,scrape+len(finder))
+            splt = f[1:len(f)-1].split(",")
+            arg = []
+            for j in splt:
+                arg.append(float(solve(j)))
+            res = call(*arg)
             if "e" in str(res):
                 res = "{:.12f}".format(res)
             else:
@@ -460,10 +458,10 @@ def evaluate(seq, func_names = [], funcs = [], const_names = [], vals = []):
             return "Function Not Defined: "+i
     if prompt != None:
         return prompt
-    replacement = solve_func(seq,func_names,funcs)
-    replacement = load_const(replacement, const_names, vals)
-    #replacement = load_const(seq, const_names, vals)
-    #replacement = solve_func(replacement,func_names,funcs)
+    #replacement = solve_func(seq,func_names,funcs)
+    #replacement = load_const(replacement, const_names, vals)
+    replacement = load_const(seq, const_names, vals)
+    replacement = solve_func(replacement,func_names,funcs)
     try:
         ret = str(solve(replacement))
     except ZeroDivisionError:
@@ -472,6 +470,4 @@ def evaluate(seq, func_names = [], funcs = [], const_names = [], vals = []):
         ret = ret.replace("_","-")
     return float(ret)
         
-        
-
-
+ 
