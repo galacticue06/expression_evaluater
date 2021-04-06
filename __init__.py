@@ -1,19 +1,15 @@
-from expression_evaluater import parse
+from expression_evaluator import parse
 
-class evaluate_math:
+class evaluate:
     '''Evaluates the given mathematical expression.\nTakes 2 positional arguments as dictionaries for functions and constants.'''
     def __init__(self, expression, functions={}, constants={}):
         self.result = parse.exp_evaluate(expression,functions,constants)
-        
-class evaluate_expr:
-    '''Evaluates the given logical expression.\nTakes 2 positional arguments as dictionaries for functions and constants.'''
-    def __init__(self, expression, functions={}, constants={}):
-        self.result = parse.eq_evaluate(expression,functions,constants)
-        
-class evaluate_depth:
-    '''Analyzes the given sequence and returns bracket's content in the matching depth.'''
-    def __init__(self, expression, dpt):
-        self.result = parse.depth(expression, dpt)
+        c = 0
+        ls = len(parse.depth(expression,c))
+        while ls > 0:
+            c += 1
+            ls = len(parse.depth(expression,c))
+        self.depth = c
 
 class parse_expr:
     '''Parse the given expression\n\nSelf.constants -> Returns constant names\nSelf.functions -> Returns function names'''
